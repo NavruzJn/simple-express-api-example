@@ -1,0 +1,36 @@
+{
+  "name": "simple-express-api-example",
+  "version": "1.0.0",
+  "description": "Simple Express Api",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "reqres": "node scripts/getDataFromApi.js",
+    "puppeteer": "node scripts/getDataWithPuppeteer.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NavruzJn/simple-express-api-example.git"
+  },
+  "author": "Navruz Jandullaev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NavruzJn/simple-express-api-example/issues"
+  },
+  "homepage": "https://github.com/NavruzJn/simple-express-api-example#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "lodash": "latest",
+    "mysql": "^2.17.1",
+    "mysql2": "^1.7.0",
+    "node-geocoder": "^3.24.0",
+    "puppeteer": "^1.20.0",
+    "ramda": "^0.26.1",
+    "sequelize": "^5.18.2"
+  }
+}
