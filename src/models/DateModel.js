@@ -11,14 +11,14 @@ class DateModel extends BaseModel {
 
 function initDateModel(database) {
     database.define(DATE_TABLE_NAME, {
-        date: STRING,
-        commissions: STRING,
-        sales: STRING,
-        leads: STRING,
-        clicks: STRING,
-        epc: STRING,
-        impressions: STRING,
-        cr: STRING
+        date: STRING, //TODO: Should be date
+        commissions: STRING, //TODO: Should be int
+        sales: STRING, //TODO: Should be int
+        leads: STRING, //TODO: Should be int
+        clicks: STRING, //TODO: Should be int
+        epc: STRING, //TODO: Should be int
+        impressions: STRING, //TODO: Should be int
+        cr: STRING //TODO: Should be int
     }, {});
 }
 

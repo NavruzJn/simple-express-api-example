@@ -5,23 +5,8 @@ const { DateService } = require("../src/services/DateService");
 const db = new Database();
 const dateService = new DateService(db);
 
-(async() => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+async function createDates(page) {
 
-    await page.goto('https://publisher-dev.affluent.io/login');
-
-    await page.type('input[type="email"]', 'developertest@affluent.io');
-    await page.type('input[type="password"]', 'H3lloWorld!');
-
-    await Promise.all([
-        page.waitForNavigation({waitUntil: 'networkidle2'}),
-        page.click('button')
-    ]);
-
-    await page.goto('https://publisher-dev.affluent.io/list?type=dates&startDate=2019-08-01&endDate=2019-08-31', {waitUntil: 'networkidle2'});
-
-    // Extract the results from the page.
     const allData = await page.evaluate(() => {
         const tds = Array.from(document.querySelectorAll('#DataTables_Table_0 tr td'));
         return tds.map(td => td.innerHTML);
@@ -42,9 +27,39 @@ const dateService = new DateService(db);
         });
     }
 
-    console.log(dateModels);
-
     await Promise.all([dateModels.forEach((dateModel) => dateService.create(dateModel))]);
+
+    const next = await page.evaluate(async () => {
+        const button = Array.from(document.querySelectorAll('.dataTables_paginate ul .next a[title="Next"]'))[0];
+        return !button.parentElement.className.split(' ').find(name => name === 'disabled');
+    });
+    if(next) {
+        await Promise.all([
+            page.waitForResponse(response => response.ok()),
+            page.click('li[class="next"]')
+        ]);
+        await createDates(page);
+    }
+}
+
+(async() => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.goto('https://publisher-dev.affluent.io/login');
+
+    await page.type('input[type="email"]', 'developertest@affluent.io');
+    await page.type('input[type="password"]', 'H3lloWorld!');
+
+    await Promise.all([
+        page.waitForNavigation({waitUntil: 'networkidle2'}),
+        page.click('button')
+    ]);
+
+    await page.goto('https://publisher-dev.affluent.io/list?type=dates&startDate=2019-08-01&endDate=2019-08-31', {waitUntil: 'networkidle2'});
+
+    // Extract the results from the page.
+    await createDates(page);
 
     await browser.close();
 })();
